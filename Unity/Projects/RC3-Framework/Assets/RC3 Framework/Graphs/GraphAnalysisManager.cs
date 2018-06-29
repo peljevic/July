@@ -51,6 +51,43 @@ namespace RC3.Graphs
         #region Public Methods
         #endregion
 
+
+        #region GUI methods
+        // GUI METHODS 
+        public void UpdateGraphAnalysis()
+        {
+            UpdateAnalysis();
+            _graphvisualizer.SetVizColors();
+        }
+
+        public void ShowComponents()
+        {
+            _graphvisualizer.VizMode = GraphVisualizer.RenderMode.Components;
+            _graphvisualizer.SetVizColors();
+        }
+
+        public void ShowDepth()
+        {
+            _graphvisualizer.VizMode = GraphVisualizer.RenderMode.DepthFromSource;
+            _graphvisualizer.SetVizColors();
+        }
+
+        public void ShowComponentsSize()
+        {
+
+            _graphvisualizer.VizMode = GraphVisualizer.RenderMode.ComponentsSize;
+            _graphvisualizer.SetVizColors();
+        }
+
+        public void ShowStress()
+        {
+            _graphvisualizer.VizMode = GraphVisualizer.RenderMode.StressAnalysis;
+            _graphvisualizer.SetVizColors();
+        }
+
+        #endregion GUI methods
+
+
         #region Private Methods
 
         void Start()

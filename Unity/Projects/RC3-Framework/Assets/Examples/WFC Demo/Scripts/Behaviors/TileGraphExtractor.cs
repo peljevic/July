@@ -1,4 +1,4 @@
-﻿
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using RC3.Graphs;
@@ -21,6 +21,35 @@ namespace RC3.Unity.WFCDemo
         private TileMap<string> _map;
         private HashSet<string> _labelSet;
 
+        ///Jelena messing up stuff
+        ///
+
+        SharedAnalysisEdgeGraph _analysisGraph;
+
+        private float[] _averageForces;
+        private float[] _averageTorques;
+        private float _maxForce;
+        private float _minForce;
+        private float _maxTorque;
+        private float _minTorque;
+
+
+        public void CollectStructureInformation()
+        {
+            for (int i = 0; i < _tileGraph.VertexObjects.Count; i++)
+            {
+                var v = _tileGraph.VertexObjects[i];
+                _analysisGraph.ForceStress[i] = _averageForces[i] = v.JointAvgForce();
+                _analysisGraph.TorqueStress[i] = _averageTorques[i] = v.JointAvgTorque();
+
+                _analysisGraph.MaxForce = _maxForce = _averageForces.Max();
+                _analysisGraph.MaxTorque = _maxTorque = _averageTorques.Max();
+
+                _minForce = _averageForces.Min();
+                _minTorque = _averageTorques.Min();
+
+            }
+        }
 
         /// <summary>
         /// 
@@ -73,6 +102,8 @@ namespace RC3.Unity.WFCDemo
 
             return g1;
         }
+
+     
 
         /// <summary>
         /// 

@@ -65,7 +65,7 @@ public class GraphVisualizer : MonoBehaviour
         _mesh.SetIndices(_analysisgraph.LineIndices.ToArray<int>(), MeshTopology.Lines, 0);
         SetVizColors();
     }
-
+    
     public void SetVizColors()
     {
         if(_vizmode == RenderMode.StressAnalysis)

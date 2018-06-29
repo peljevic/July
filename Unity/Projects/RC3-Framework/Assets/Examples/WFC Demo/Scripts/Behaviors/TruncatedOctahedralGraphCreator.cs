@@ -15,9 +15,9 @@ namespace RC3.Unity.WFCDemo
     {
         [SerializeField] SharedDigraph _tileGraph;
         [SerializeField] VertexObject _vertexPrefab;
-        [SerializeField] private int _countX = 10;
-        [SerializeField] private int _countY = 10;
-        [SerializeField] private int _countZ = 10;
+        [SerializeField] public int _countX = 10;
+        [SerializeField] public int _countY = 10;
+        [SerializeField] public int _countZ = 10;
 
         public int CountX
         {
