@@ -232,18 +232,25 @@ namespace RC3.Graphs
 
             if (Input.GetKeyDown(KeyCode.V))
             {
-                if (_graphviz < 2)
+                if (_graphviz < 3)
                 {
                     _graphviz++;
                     if (_graphviz == 1)
                     {
                         _graphvisualizer.VizMode = GraphVisualizer.RenderMode.Components;
+
                     }
 
                     if (_graphviz == 2)
                     {
                         _graphvisualizer.VizMode = GraphVisualizer.RenderMode.ComponentsSize;
                     }
+
+                    if (_graphviz == 3)
+                    {
+                        _graphvisualizer.VizMode = GraphVisualizer.RenderMode.StressAnalysis;
+                    }
+
                 }
                 else
                 {

@@ -12,6 +12,7 @@ using SpatialSlur.Unity;
 
 namespace RC3.Unity.WFCDemo
 {
+
     public class ColorJoints : MonoBehaviour
     {
         public Color[] Spectrum;
@@ -127,7 +128,7 @@ namespace RC3.Unity.WFCDemo
                         vJoint.breakForce = BreakForce;
                         vJoint.breakTorque = BreakTorque;
 
-                        v.Joints(vJoint);
+                        v.AddJoints(vJoint);
                         //StoreJoints(vJoint, i, dirCounter);
 
                     }

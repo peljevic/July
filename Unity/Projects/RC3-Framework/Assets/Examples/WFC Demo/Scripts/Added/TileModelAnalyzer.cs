@@ -293,7 +293,7 @@ namespace RC3.Unity.WFCDemo
             Debug.Log("Kinematic Tiles " + _kinematicPercent);
         }
         
-        private void AddJointsToConnected()
+        public void AddJointsToConnected()
         {
             for (int i = 0; i < _verts.Count; i++)
             {
@@ -311,8 +311,10 @@ namespace RC3.Unity.WFCDemo
                         var vJoint = v.gameObject.AddComponent<FixedJoint>();
                         vJoint.connectedBody = vn.GetComponent<Rigidbody>();
 
-                        //vJoint.breakForce = BreakForce;
-                        //vJoint.breakTorque = BreakTorque;
+                        vJoint.breakForce = Mathf.Infinity; ;
+                        vJoint.breakTorque = Mathf.Infinity; 
+
+                        v.AddJoints(vJoint);
                     }
                 }
             }

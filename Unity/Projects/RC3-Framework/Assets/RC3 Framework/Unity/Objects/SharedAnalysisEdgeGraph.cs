@@ -14,7 +14,7 @@ namespace RC3.Unity
     /// 
     /// </summary>
     public class SharedAnalysisEdgeGraph<V, E> : ScriptableObject
-        where V : VertexObject
+        where V : RC3.Unity.WFCDemo.VertexObject
         where E : EdgeObject
     {
         private EdgeGraph _graph;
@@ -35,6 +35,14 @@ namespace RC3.Unity
         private int _deepverticescount = -1;
         private List<int> _unreachablevertices = new List<int>();
         private List<int> _edgelessvertices = new List<int>();
+
+        //Joints Variables
+        private float[] _torqueStress;
+        private float[] _forceStress;
+        private float _maxForce;
+        private float _minForce;
+        private float _maxTorque;
+        private float _minTorque;
 
         //Used for drawing the graph
         private Vector3[] _vertices;
@@ -160,6 +168,44 @@ namespace RC3.Unity
             set { _normalizeddepths = value; }
         }
 
+        /// <summary>
+        /// TO DO 
+        /// </summary>
+        public float[] TorqueStress
+        {
+            get { return _torqueStress; }
+            set { _torqueStress = value; }
+        }
+
+        public float[] ForceStress
+        {
+            get { return _forceStress; }
+            set { _forceStress = value; }
+        }
+
+        public float MaxForce
+        {
+            get { return _maxForce; }
+            set { _maxForce = value; }
+        }
+
+        public float MinForce
+        {
+            get { return _minForce; }
+            set { _minForce = value; }
+        }
+
+        public float MaxTorque
+        {
+            get { return _maxTorque; }
+            set { _maxTorque = value; }
+        }
+
+        public float MinTorque
+        {
+            get { return _minTorque; }
+            set { _minTorque = value; }
+        }
 
         /// <summary>
         /// 

@@ -1,10 +1,4 @@
 ﻿
-/*
- * Notes
- * 
- * Tiles must be scaled by -1 in the x if modeled in a right hand coordinate system.
- */
-
 using System.Collections.Generic;
 using UnityEngine;
 using RC3.Graphs;
@@ -22,7 +16,7 @@ namespace RC3.Unity.WFCDemo
 
         [SerializeField] private bool _applytilefilter = false;
         [SerializeField] private List<int> _ignoretiles;
-
+         
         private TileModel _model;
         private TileMap<string> _map;
         private HashSet<string> _labelSet;

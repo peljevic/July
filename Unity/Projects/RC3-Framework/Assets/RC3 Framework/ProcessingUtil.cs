@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using RC3.Unity;
-/*
- * Notes
- */
+
 
 namespace RC3.Graphs
 {
@@ -174,6 +172,54 @@ namespace RC3.Graphs
             edgelessvertices = _edgelessvertices;
         }
 
+#if (false)
+
+        public void RemapGraphStress(IGraph graph, int[] inputvalues, float minoutvalue, float maxoutvalue, out float[] outputvalues)
+        {
+            float[] _outputvalues = new float[inputvalues.Length];
+            int maxvalue = int.MinValue;
+            int minvalue = int.MaxValue;
+           
+
+            foreach (var v in _verts)
+            {
+                List<FixedJoint> joints = v.GetJoints;
+                    }
+            
+            for (int i = 0; i < inputvalues.Length; i++)
+            {
+                int input = inputvalues[i];
+               
+                if (joints!=null)
+                {
+                    if (input > maxvalue)
+                    {
+                        maxvalue = input;
+                    }
+                    if (input < minvalue)
+                    {
+                        minvalue = input;
+                    }
+                }
+            }
+
+            for (int i = 0; i < inputvalues.Length; i++)
+            {
+                if (unreachable[i] == true || edgeless[i] == true)
+                {
+                    inputvalues[i] = maxvalue;
+                }
+
+                _outputvalues[i] = Remap((float)inputvalues[i], (float)minvalue, (float)maxvalue, minoutvalue, maxoutvalue);
+            }
+
+            outputvalues = _outputvalues;
+            unreachablevertices = _unreachablevertices;
+            edgelessvertices = _edgelessvertices;
+        }
+
+#endif
+
         /// <summary>
         /// Remap the components to an array for graph viz colors
         /// </summary>
@@ -270,6 +316,7 @@ namespace RC3.Graphs
             return _outputvalues;
         }
 
+        
     /// <summary>
     /// Remaps an array of values to a new range
     /// </summary>
@@ -586,9 +633,9 @@ namespace RC3.Graphs
         return reversegraph;
     }
 
-    #endregion
+#endregion
 
-    #region Private Methods - (Undirected Graph) - Counting Closures 
+#region Private Methods - (Undirected Graph) - Counting Closures 
     /// <summary>
     /// Returns the number of edges in the graph.
     /// </summary>
@@ -602,9 +649,9 @@ namespace RC3.Graphs
         return edgeCount;
     }
 
-    #endregion
+#endregion
 
-    #region Private Methods - (Directed Graph) - Cycles 
+#region Private Methods - (Directed Graph) - Cycles 
     /// <summary>
     /// 
     /// </summary>
@@ -772,9 +819,9 @@ namespace RC3.Graphs
         }
         blockedmap.Remove(vertex);
     }
-    #endregion
+#endregion
 
-    #region Private Methods - (Directed Graph - SCC)
+#region Private Methods - (Directed Graph - SCC)
 
     /// <summary>
     /// Depth first search populates the stack with vertices ordered by finish time (vertex finishing last at top)
@@ -821,11 +868,11 @@ namespace RC3.Graphs
     }
 
 
-    #endregion
+#endregion
 
-    #region Public Properties
+#region Public Properties
 
-    #endregion
+#endregion
 
 
 

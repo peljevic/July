@@ -30,6 +30,8 @@ namespace RC3.Unity.WFCDemo
 
 
         private List<FixedJoint> _joints;
+        private float _jointForce;
+        private float _jointTorque;
 
         //On domains!!!
         //private VertexObject[] _neighbors;
@@ -88,15 +90,39 @@ namespace RC3.Unity.WFCDemo
             set { value = _position; }
         }
 
-        public void Joints(FixedJoint joint)
+        public void AddJoints(FixedJoint joint)
         {
             _joints.Add(joint);
+
+            OnSetJoint(joint);
         }
 
         public List<FixedJoint> GetJoints
         {
             get { return _joints; }
         }
+        
+        private void OnSetJoint(FixedJoint joint)
+        {
+            _jointForce += joint.currentForce.magnitude;
+            _jointTorque += joint.currentTorque.magnitude;
+        }
+
+        public float JointAvgForce()
+        {
+            if (_joints != null)
+            { return (_jointForce / _joints.Count); }
+
+            else return 0.0f;
+        }
+
+        public float JointAvgTorque()
+        { if (_joints != null)
+            { return (_jointTorque / _joints.Count); }
+
+            else return 0.0f;
+        }
+
         /// <summary>
         /// 
         /// </summary>
