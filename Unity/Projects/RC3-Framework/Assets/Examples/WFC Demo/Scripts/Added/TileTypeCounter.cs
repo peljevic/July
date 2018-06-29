@@ -39,6 +39,11 @@ namespace RC3.Unity.WFCDemo
             get { return (_positionsAvailableToTouchGround - _tilesTouchingGround); }
         }
 
+        public float PositionsOnGroundPercent
+        {
+            get { return ((float)_tilesTouchingGround/(float)_positionsAvailableToTouchGround); }
+        }
+
         public int RemainingPositions
         {
             get { return _remainingPositions; }
@@ -55,13 +60,16 @@ namespace RC3.Unity.WFCDemo
         [SerializeField] private int _neededArea = 3146;
         private List<VertexObject> _verts;
         private TileSet _tileSet;
-        private int[] _counts;
+        private float _min = 0;
+        private int _maxAreaTile = 0;
+      
+        //gui featured
         private int _totalArea = 0;
         private int _remainingPositions;
         private int _tilesTouchingGround = 0;
         private int _positionsAvailableToTouchGround = 0;
-        private float _min =0;
-        private int _maxAreaTile = 0;
+        private int[] _counts;
+
 
         private void Awake()
         {

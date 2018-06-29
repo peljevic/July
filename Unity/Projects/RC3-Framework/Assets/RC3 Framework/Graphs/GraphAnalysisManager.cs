@@ -19,27 +19,29 @@ namespace RC3.Graphs
         private ProcessingUtil _graphprocessing = new ProcessingUtil();
 
         [SerializeField]
-        private TileGraphExtractor _graphextractor;
+        private TileGraphExtractor _graphExtractor;
 
         [SerializeField]
-        private TileModelManager _tilemodelmanager;
+        private TileModelManager _tileModelManager;
         private TileModel _tilemodel;
 
         [SerializeField]
-        private SharedAnalysisEdgeGraph _analysisgraph;
+        private SharedAnalysisEdgeGraph _analysisGraph;
         private GraphVisualizer _graphvisualizer;
+
+        private int _graphviz = 0;
 
         #endregion
 
         #region Constructors
         private void Awake()
         {
-            if (_tilemodelmanager != null)
+            if (_tileModelManager != null)
             {
-                _tilemodel = _tilemodelmanager.TileModel;
+                _tilemodel = _tileModelManager.TileModel;
             }
 
-            _analysisgraph.Initialize();
+            _analysisGraph.Initialize();
 
             _graphvisualizer = GetComponent<GraphVisualizer>();
         }
@@ -104,7 +106,7 @@ namespace RC3.Graphs
             float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(testgraph, components);
             string normalizedcomponentsstring = string.Join(",", normalizedcomponents);
             Debug.Log("TestGraph | NormalizedComponents = " + normalizedcomponentsstring);
-
+            Debug.Log($"TestGraph | NormalizedComponentsCount =  {normalizedcomponents.ToArray().Length}");
             Debug.Log("TestGraph | Closures Count = " + closurecount);
             Debug.Log("TestGraph | Closures Rate = " + closurerate);
 
@@ -118,77 +120,84 @@ namespace RC3.Graphs
         private void UpdateAnalysis()
         {
 
-            if (_graphextractor != null && _tilemodelmanager != null)
+            if (_graphExtractor != null && _tileModelManager != null)
             {
-                if (_tilemodelmanager.Status == CollapseStatus.Complete)
+                if (_tileModelManager.Status == CollapseStatus.Complete)
                 {
-                    _graphextractor.ExtractSharedEdgeGraph(_analysisgraph);
+                    _graphExtractor.ExtractSharedEdgeGraph(_analysisGraph);
 
                     //Extracted Graph | Analysis
                     //analyze/get # of closures / strongly connected components
                     int closurecount = 0;
                     int componentcount = 0;
-                    List<HashSet<int>> connectedcomponents = new List<HashSet<int>>();
-                    _graphprocessing.CountClosures(_analysisgraph.Graph, out componentcount, out closurecount, out connectedcomponents);
-                    float closurerate = (float)closurecount / (float)_analysisgraph.Graph.EdgeCount;
+                    List<HashSet<int>> connectedComponents = new List<HashSet<int>>();
+                    _graphprocessing.CountClosures(_analysisGraph.Graph, out componentcount, out closurecount, out connectedComponents);
+                    float closureRate = (float)closurecount / (float)_analysisGraph.Graph.EdgeCount;
+
+                    Debug.Log($"GRAPH ANALYSIS MANAGER | CONNECTED COMPONENTS COUNT {connectedComponents.Count}");
+
 
                     //normalized/remapped components to an array for graph coloring
-                    float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(_analysisgraph.Graph, connectedcomponents);
-                    //float[] normalizedcomponents = _graphprocessing.RemapComponentsSizeToArray(_analysisgraph.Graph, connectedcomponents);
-                                        
+                    float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(_analysisGraph.Graph, connectedComponents);
+                    float[] normalizedcomponentsbysize = _graphprocessing.RemapComponentsSizeToArray(_analysisGraph.Graph, connectedComponents);
+
                     //analyze/get 1) ground support sources, 2) list of vertex depths 3) max depth 
-                    List<int> sources = _graphprocessing.GetGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, 2f);
-                    int[] depths = _graphprocessing.DepthsFromGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, 2f);
+                    List<int> sources = _graphprocessing.GetGroundSources(_analysisGraph.Graph, _analysisGraph.Vertices, 2f);
+                    int[] depths = _graphprocessing.DepthsFromGroundSources(_analysisGraph.Graph, _analysisGraph.Vertices, 2f);
                     int maxdepth = _graphprocessing.MaxDepth(depths);
 
                     //analyze/get 1) unreachable vertices, 2) remapped vertex depths between 0,1, 3) edgeless vertices
-                    float[] normalizeddepths = new float[_analysisgraph.Graph.VertexCount];
+                    float[] normalizeddepths = new float[_analysisGraph.Graph.VertexCount];
                     List<int> unreachablevertices = new List<int>();
                     List<int> edgelessvertices = new List<int>();
-                    _graphprocessing.RemapGraphDepths(_analysisgraph.Graph, depths, 0, 1, out normalizeddepths, out unreachablevertices, out edgelessvertices);
+                    _graphprocessing.RemapGraphDepths(_analysisGraph.Graph, depths, 0, 1, out normalizeddepths, out unreachablevertices, out edgelessvertices);
 
                     //store analysis in the shared analysis graph scriptable object - VIEW THIS DATA ON A UI CANVAS
-                    _analysisgraph.ClosuresCount = closurecount;
-                   // _analysisgraph.ConnectedComponents = connectedcomponents;
-                    _analysisgraph.NormalizedDepths = normalizedcomponents;
-                    _analysisgraph.ConnectedComponentsCount = componentcount;
-                    _analysisgraph.Sources = sources;
-                    _analysisgraph.Depths = depths;
-                    _analysisgraph.NormalizedDepths = normalizeddepths;
-                    _analysisgraph.MaxDepth = maxdepth;
-                    _analysisgraph.UnreachableVertices = unreachablevertices;
-                    _analysisgraph.EdgelessVertices = edgelessvertices;
+                    _analysisGraph.ClosuresCount = closurecount;
+                    _analysisGraph.ConnectedComponents = connectedComponents;
+                    _analysisGraph.NormalizedComponents = normalizedcomponents;
+                    _analysisGraph.NormalizedComponentsBySize = normalizedcomponentsbysize;
+                    _analysisGraph.ConnectedComponentsCount = componentcount;
+                    _analysisGraph.Sources = sources;
+                    _analysisGraph.Depths = depths;
+                    _analysisGraph.NormalizedDepths = normalizeddepths;
+                    _analysisGraph.MaxDepth = maxdepth;
+                    _analysisGraph.UnreachableVertices = unreachablevertices;
+                    _analysisGraph.EdgelessVertices = edgelessvertices;
 
                     //Extracted Graph | Debug Print Results
-                    Debug.Log("Exracted Graph | ComponentsCount = " + _analysisgraph.ConnectedComponentsCount);
-                    for (int i = 0; i < connectedcomponents.Count; i++)
+                    Debug.Log("Exracted Graph | ComponentsCount = " + _analysisGraph.ConnectedComponentsCount);
+                    for (int i = 0; i < connectedComponents.Count; i++)
                     {
-                        HashSet<int> set = connectedcomponents[i];
-                        string setstring = string.Join(",", connectedcomponents[i]);
+                        HashSet<int> set = connectedComponents[i];
+                        string setstring = string.Join(",", connectedComponents[i]);
                         Debug.Log("Exracted Graph | ConnectedComponent# " + (i + 1) + " = " + setstring);
                     }
 
-                    string normalizedcomponentsstring = string.Join(",", _analysisgraph.NormalizedDepths);
+                    string normalizedcomponentsstring = string.Join(",", _analysisGraph.NormalizedComponents);
+                    string normalizedcomponentsbysizestring = string.Join(",", _analysisGraph.NormalizedComponentsBySize);
+
                     Debug.Log("Exracted Graph | NormalizedComponents = " + normalizedcomponentsstring);
+                    Debug.Log("Exracted Graph | NormalizedComponentsBySize = " + normalizedcomponentsbysizestring);
 
-                    Debug.Log("Exracted Graph | Closures Count = " + _analysisgraph.ClosuresCount);
-                    Debug.Log("Exracted Graph | Closures Rate = " + _analysisgraph.ClosureRate);
+                    Debug.Log("Exracted Graph | Closures Count = " + _analysisGraph.ClosuresCount);
+                    Debug.Log("Exracted Graph | Closures Rate = " + _analysisGraph.ClosureRate);
 
-                    string sourcesstring = string.Join(",", _analysisgraph.Sources);
-                    string depthsstring = string.Join(",", _analysisgraph.Depths);
+                    string sourcesstring = string.Join(",", _analysisGraph.Sources);
+                    string depthsstring = string.Join(",", _analysisGraph.Depths);
                     Debug.Log("Exracted Graph | Depths = " + depthsstring);
-                    Debug.Log("Exracted Graph | Max Depth = " + _analysisgraph.MaxDepth);
-                    Debug.Log("Exracted Graph | SourcesCount = " + _analysisgraph.SourcesCount);
+                    Debug.Log("Exracted Graph | Max Depth = " + _analysisGraph.MaxDepth);
+                    Debug.Log("Exracted Graph | SourcesCount = " + _analysisGraph.SourcesCount);
                     Debug.Log("Exracted Graph | Sources = " + sourcesstring);
 
-                    string normalizeddepthsstring = string.Join(",", _analysisgraph.NormalizedDepths);
-                    string unreachablevrtsstring = string.Join(",", _analysisgraph.UnreachableVertices);
-                    string edgelessvrtsstring = string.Join(",", _analysisgraph.EdgelessVertices);
+                    string normalizeddepthsstring = string.Join(",", _analysisGraph.NormalizedDepths);
+                    string unreachablevrtsstring = string.Join(",", _analysisGraph.UnreachableVertices);
+                    string edgelessvrtsstring = string.Join(",", _analysisGraph.EdgelessVertices);
 
                     Debug.Log("Exracted Graph | Normalized Depths = " + normalizeddepthsstring);
-                    Debug.Log("Exracted Graph | Unreachable Vertices Count = " + _analysisgraph.UnreachableVerticesCount);
+                    Debug.Log("Exracted Graph | Unreachable Vertices Count = " + _analysisGraph.UnreachableVerticesCount);
                     Debug.Log("Exracted Graph | Unreachable Vertices = " + unreachablevrtsstring);
-                    Debug.Log("Exracted Graph | Edgeless Vertices Count = " + _analysisgraph.EdgelessVerticesCount);
+                    Debug.Log("Exracted Graph | Edgeless Vertices Count = " + _analysisGraph.EdgelessVerticesCount);
                     Debug.Log("Exracted Graph | Edgeless Vertices = " + edgelessvrtsstring);
 
                 }
@@ -220,6 +229,30 @@ namespace RC3.Graphs
                 UpdateAnalysis();
                 UpdateGraphMesh();
             }
+
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                if (_graphviz < 2)
+                {
+                    _graphviz++;
+                    if (_graphviz == 1)
+                    {
+                        _graphvisualizer.VizMode = GraphVisualizer.RenderMode.Components;
+                    }
+
+                    if (_graphviz == 2)
+                    {
+                        _graphvisualizer.VizMode = GraphVisualizer.RenderMode.ComponentsSize;
+                    }
+                }
+                else
+                {
+                    _graphviz = 0;
+                    _graphvisualizer.VizMode = GraphVisualizer.RenderMode.DepthFromSource;
+                }
+
+                _graphvisualizer.SetVizColors();
+            }
         }
 
         #endregion
@@ -228,12 +261,12 @@ namespace RC3.Graphs
 
         public IEdgeGraph Graph
         {
-            get { return _analysisgraph.Graph; }
+            get { return _analysisGraph.Graph; }
         }
 
         public SharedAnalysisEdgeGraph AnalysisGraph
         {
-            get { return _analysisgraph; }
+            get { return _analysisGraph; }
         }
 
         #endregion

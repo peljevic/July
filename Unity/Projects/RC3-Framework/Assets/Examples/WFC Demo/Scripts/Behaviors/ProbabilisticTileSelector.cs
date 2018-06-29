@@ -76,21 +76,21 @@ namespace RC3.Unity.WFCDemo
 
             _counter.Count(nextTile, position);
 
+            Debug.Log("next tile is " + _selector.Next().ToString());
+
+            if (nextTile == null)
+            {
+                Debug.Log("Next tile doesn't exist");
+                return 0;
+            }
+
+            if (nextTile >= _tileSet.Count)
+            {
+                Debug.Log("Next tile out of range");
+                return 0;
+            }
+
             return nextTile;
-
-            //Debug.Log("next tile is " + _selector.Next().ToString());
-
-            //if (next == null)
-            //{
-            //    Debug.Log("Next tile doesn't exist");
-            //    return 0;
-            //}
-
-            //if (next >= _tileSet.Count)
-            //{
-            //    Debug.Log("Next tile out of range");
-            //    return 0;
-            //}
         }
 
 

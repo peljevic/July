@@ -444,9 +444,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303b655c5eb31c94a9e70df6c9101d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _graphextractor: {fileID: 1467768202}
-  _tilemodelmanager: {fileID: 1467768198}
-  _analysisgraph: {fileID: 11400000, guid: ec34b452703ec1d439964b1280300fb7, type: 2}
+  _graphExtractor: {fileID: 1467768202}
+  _tileModelManager: {fileID: 1467768198}
+  _analysisGraph: {fileID: 11400000, guid: ec34b452703ec1d439964b1280300fb7, type: 2}
 --- !u!114 &1225709893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
   _material: {fileID: 2100000, guid: c5434f663b12a284b837742f81ec113f, type: 2}
   minedgesize: 0.5
   maxedgesize: 3
-  _rendermode: 0
+  _vizmode: 0
 --- !u!1 &1467768197
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileGraph: {fileID: 11400000, guid: 1444a06be789f354086b14d79e1bc128, type: 2}
-  _tileSet: {fileID: 11400000, guid: e0288e16da717804cb497678f66828f0, type: 2}
+  _tileSet: {fileID: 11400000, guid: a02e50ccb81041a408d1c502cc7aa7ee, type: 2}
   _substeps: 10
   _seed: 1
 --- !u!4 &1467768199
@@ -559,7 +559,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tileGraph: {fileID: 11400000, guid: 1444a06be789f354086b14d79e1bc128, type: 2}
   _validLabels:
-  - a
+  - c
+  - f
+  - n
+  - k
   _applytilefilter: 1
   _ignoretiles: 0000000002000000
 --- !u!114 &1467768204
@@ -588,7 +591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _analysisOn: 1
   _grid: {fileID: 11400000, guid: 1444a06be789f354086b14d79e1bc128, type: 2}
-  _tileSet: {fileID: 11400000, guid: e0288e16da717804cb497678f66828f0, type: 2}
+  _tileSet: {fileID: 11400000, guid: a02e50ccb81041a408d1c502cc7aa7ee, type: 2}
   _neededArea: 3146
   _maxDensity: 0
   _areaTolerance: 0
@@ -616,7 +619,7 @@ MonoBehaviour:
   MaxForce: 1000
   MaxTorque: 1000
   _grid: {fileID: 11400000, guid: 1444a06be789f354086b14d79e1bc128, type: 2}
-  _tileSet: {fileID: 11400000, guid: e0288e16da717804cb497678f66828f0, type: 2}
+  _tileSet: {fileID: 11400000, guid: a02e50ccb81041a408d1c502cc7aa7ee, type: 2}
   _maxSpeed: 0
 --- !u!114 &1467768207
 MonoBehaviour:
@@ -630,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _counter: {fileID: 1467768204}
-  _tileSet: {fileID: 11400000, guid: e0288e16da717804cb497678f66828f0, type: 2}
+  _tileSet: {fileID: 11400000, guid: a02e50ccb81041a408d1c502cc7aa7ee, type: 2}
   _seed: 1
 --- !u!1001 &1981980967
 Prefab:
@@ -826,6 +829,7 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114686857906632184, guid: 183a510ef691b6e47958a8d0bd6eba8f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 183a510ef691b6e47958a8d0bd6eba8f, type: 2}
   m_IsPrefabParent: 0
