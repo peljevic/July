@@ -17,7 +17,8 @@ public class GraphVisualizer : MonoBehaviour
     private GraphAnalysisManager _graphanalysis;
     [SerializeField]
     private Material _material;
-
+    [SerializeField]
+    private RemapJoints _remapJoints;
 
     private MeshRenderer _meshRenderer;
     private MeshFilter _meshFilter;
@@ -50,6 +51,7 @@ public class GraphVisualizer : MonoBehaviour
         _mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         _mesh.name = "GraphMesh";
         _meshFilter.mesh = _mesh;
+
     }
 
     public void CreateMesh()
@@ -68,6 +70,7 @@ public class GraphVisualizer : MonoBehaviour
     {
         if(_vizmode == RenderMode.StressAnalysis)
         {
+            _remapJoints.CollectStructureInformation();
             _meshRenderer.sharedMaterial = _material;
 
             Vector2[] uvs = new Vector2[_analysisgraph.Graph.VertexCount];

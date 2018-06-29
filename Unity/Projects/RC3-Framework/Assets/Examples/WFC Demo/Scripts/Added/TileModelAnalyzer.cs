@@ -71,6 +71,7 @@ namespace RC3.Unity.WFCDemo
                     Debug.Log("Analyze methods called.");
                     AnalyzeModel();
                     MarkWeakTiles();
+
                 }
 
                 if (Input.GetKeyDown(KeyCode.S))
